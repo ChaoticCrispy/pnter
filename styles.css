@@ -154,6 +154,7 @@ b, strong {
 i, em {
   font-style: italic;
   color: #cfcfcf41;
+  text-decoration: line-through;
 }
 
 
