@@ -1,5 +1,5 @@
-/* Reset default margin and padding */
-body, html {
+/* === General Reset & Base Styles === */
+html, body {
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -8,118 +8,86 @@ body, html {
   color: #ffffff; /* Light text */
   font-family: 'Arial', sans-serif;
 }
-#backgroundCanvas {
+
+/* === Canvas Backgrounds === */
+#backgroundCanvas,
+#typingParticlesCanvas {
   position: fixed;
   top: 0;
   left: 0;
+  pointer-events: none;
   width: 100vw;
   height: 100vh;
-  z-index: 1;
-  background: rgba(10, 10, 10, 0);
-  pointer-events: none; /* lets clicks go through */
 }
 
+#backgroundCanvas {
+  z-index: 1;
+  background: rgba(10, 10, 10, 0);
+}
+
+#typingParticlesCanvas {
+  position: absolute;
+  z-index: 100; /* Above content, below UI */
+}
+
+/* === Editor Container === */
 #editor-container {
   position: relative;
   z-index: 1;
   padding: 20px;
 }
 
+/* === Tab Controls === */
 #tabs {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
 }
 
-.tab-button {
-  background-color: #4141415e;
-  color: #ffffff2a;
+.tab-button,
+#particles-button,
+#add-tab-button {
   border: none;
   padding: 10px;
-  margin-right: 5px;
   cursor: pointer;
-  border-radius: 5px 5px 0 0;
   display: flex;
   align-items: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-
 }
 
-#particles-button {
-  background-color: #38383805;
-  color: #ffffff0c;
-  border: none;
-  padding: 10px;
-  margin-right: 20px;
-  margin-left: 20px;
-  margin-top: 10px;
-  cursor: pointer;
-  border-radius: 5px 5px 5px 5px;
-  display: flex;
-  align-items: center;
+/* === Individual Button Styles === */
+.tab-button {
+  background-color: #4141415e;
+  color: #ffffff2a;
+  margin-right: 5px;
+  border-radius: 5px 5px 0 0;
 }
 
-@keyframes slideInTab {
-  from { transform: translateY(-10px); opacity: 0; }
-  to   { transform: translateY(0);   opacity: 1; }
+.tab-button.active {
+  background-color: #3a3a3aa2;
+  color: #b6b6b6d7;
+  transform: translateY(-4px);
+  z-index: 1;
+  box-shadow: 0 4px 10px rgba(117, 117, 117, 0.185);
 }
-.tab-button.animate-in {
-  animation: slideInTab 0.3s ease-out;
-}
+
 .tab-button:hover:not(.active) {
   transform: translateY(-2px);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
-@keyframes fadeInLetter {
-  from { opacity: 0; transform: translateY(2px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-b, strong {
-  font-weight: bold;
-  color: #cfcfcfea;
-  text-shadow:
-    0 0 3px currentColor,
-    0 0 6px currentColor,
-    0 0 10px currentColor;
-}
 
-.fading-letter {
-  display: inline-block;
-  animation: fadeInLetter 0.3s ease-out forwards;
-}
-#particles-button:hover {
-  background-color: #49494986;
-  color: #979797e3;
-}
-.tab-button.active {
-  background-color: #3a3a3aa2;
-  color: #b6b6b6d7;
-  transform: translateY(-4px); /* move up a little */
-  z-index: 1;
-  box-shadow: 0 4px 10px rgba(117, 117, 117, 0.185); /* optional: give it lift */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.tab-button.animate-in {
+  animation: slideInTab 0.3s ease-out;
 }
 
 .tab-button span[contenteditable="true"] {
   outline: none;
 }
 
-.delete-tab {
-  margin-left: 10px;
-  cursor: pointer;
-  color: #bbb;
-}
-
-.delete-tab.danger {
-  color: red;
-}
-
+/* Add Tab Button */
 #add-tab-button {
   background-color: #44444431;
   color: #ffffff21;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
   border-radius: 5px;
   font-size: 16px;
 }
@@ -129,12 +97,26 @@ b, strong {
   color: #ffffffc7;
 }
 
+/* Particles Button */
+#particles-button {
+  background-color: #38383805;
+  color: #ffffff0c;
+  margin: 10px 20px 0;
+  border-radius: 5px;
+}
+
+#particles-button:hover {
+  background-color: #49494986;
+  color: #979797e3;
+}
+
+/* === Tab Content === */
 .tab-content {
   display: none;
-  border: 0px solid #4d4d4d1c;
   padding: 10px;
   background-color: #12121200;
-  border-radius: 0 0px 0px 0px;
+  border: 0 solid #4d4d4d1c;
+  border-radius: 0;
   min-height: 200px;
   overflow-y: auto;
 }
@@ -148,11 +130,45 @@ b, strong {
   border: none;
 }
 
+/* === Tab Deletion === */
+.delete-tab {
+  margin-left: 10px;
+  cursor: pointer;
+  color: #bbb;
+}
 
-#typingParticlesCanvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  z-index: 100; /* Above content, below UI */
+.delete-tab.danger {
+  color: red;
+}
+
+/* === Typography & Effects === */
+b, strong {
+  font-weight: bold;
+  color: #cfcfcfea;
+  text-shadow:
+    0 0 3px currentColor,
+    0 0 6px currentColor,
+    0 0 10px currentColor;
+}
+
+i, em {
+  font-style: italic;
+  color: #cfcfcf41;
+}
+
+
+.fading-letter {
+  display: inline-block;
+  animation: fadeInLetter 0.3s ease-out forwards;
+}
+
+/* === Animations === */
+@keyframes slideInTab {
+  from { transform: translateY(-10px); opacity: 0; }
+  to   { transform: translateY(0);   opacity: 1; }
+}
+
+@keyframes fadeInLetter {
+  from { opacity: 0; transform: translateY(2px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
